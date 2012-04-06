@@ -23,6 +23,15 @@ module Deface
     = render :partial => "sidebar"}).should == "<div id='content'>  <div class='left column'>    <h2>Welcome to our site!</h2>    <p>    <%= print_information %></p>  </div>  <div class='right column'>    <%= render :partial => \"sidebar\" %>  </div></div>"
       end
 
+      it "should handle simple haml attributes" do
+        haml_to_erb("%meta{:charset => 'utf-8'}").should == "<meta charset='utf-8' />"
+      end
+
+      it "should handle haml attributes with commas" do
+        haml_to_erb("%meta{'http-equiv' => 'X-UA-Compatible', :content => 'IE=edge,chrome=1'}").should == "<meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />"
+        haml_to_erb('%meta{:name => "author", :content => "Example, Inc."}').should == "<meta content='Example, Inc.' name='author' />"
+      end
+
       it "should handle erb loud" do
         haml_to_erb("%h3.title= entry.title").should == "<h3 class='title'><%= entry.title %></h3>"
       end
